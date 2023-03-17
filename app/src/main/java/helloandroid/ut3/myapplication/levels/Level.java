@@ -85,7 +85,6 @@ public class Level {
                     isGreenOrRed = false;
                     mHandler.postDelayed(this, frequence);
                 } else {
-                    vibrateDisplay();
                     selectedCord = guitar.get(0);
                     guitar.forEach(c -> {
                         c.setState(Cord.State.IS_ACTIVATED);
@@ -177,20 +176,6 @@ public class Level {
         } else if (this.lightSensorActivity.getLuminosity() >= 150) {
             this.frequence = EASY_LEVEL_FREQUENCY;
         }
-    }
-
-    public void vibrateDisplay() {
-        Toast toast = Toast.makeText(context, "Hello World!", Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP, 0, 50);
-
-        ImageView imageView = new ImageView(context);
-        imageView.setImageResource(R.drawable.shake); // Replace "icon" with the name of your icon resource
-
-        LinearLayout toastLayout = new LinearLayout(context);
-        toastLayout.addView(imageView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        toast.setView(toastLayout);
-        toast.show();
-
     }
 
     public void draggedCord(boolean draggedCord) {
