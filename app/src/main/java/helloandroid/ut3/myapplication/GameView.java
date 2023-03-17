@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.hardware.SensorManager;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -84,10 +86,25 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
     @Override
     public void draw(Canvas canvas) {
+        // Define the dimensions of the header
+        int headerHeight = this.getContext().getResources().getDimensionPixelSize(R.dimen.header_height);
+
+// Set up a clipping region that excludes the area covered by the header
+        Rect clipRect = new Rect(0, 0, canvas.getWidth(), headerHeight);
         if (canvas != null) {
             super.draw(canvas);
+            Paint paint = new Paint();
+            paint.setColor(Color.rgb(255,255,255));
             canvas.drawColor(Color.rgb(55, 48, 107));
-            this.cord.draw(canvas);
+            canvas.drawRect(clipRect, paint);
+            //
+            Paint textPaint = new Paint();
+            textPaint.setTextAlign(Paint.Align.CENTER);
+            textPaint.setTextSize(40);
+
+            int xPos = (canvas.getWidth() / 2);
+            int yPos = (int) ((headerHeight / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
+            canvas.drawText("Score : x", xPos, yPos, textPaint);
         }
     }
 
