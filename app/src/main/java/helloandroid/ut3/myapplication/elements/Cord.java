@@ -5,13 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.MotionEvent;
 
-public class Cord implements Element{
+public class Cord implements Element {
 
     private Rect shape;
-
-    private float xPos;
-    private float yPos;
 
     private Context context;
 
@@ -19,10 +17,8 @@ public class Cord implements Element{
 
     private int color;
 
-    public Cord(Rect shape, float xPos, float yPos, boolean isActivated, int color, Context context) {
+    public Cord(Rect shape, boolean isActivated, int color, Context context) {
         this.shape = shape;
-        this.xPos = xPos;
-        this.yPos = yPos;
         this.context = context;
         this.isActivated = isActivated;
         this.color = color;
@@ -31,8 +27,6 @@ public class Cord implements Element{
     public Cord(float xPos, float yPos, float width, float height, Context context) {
         this(
                 new Rect((int) xPos, (int) yPos, (int) (xPos + width), (int) (yPos + height)),
-                xPos,
-                yPos,
                 false,
                 Color.GRAY,
                 context
@@ -50,5 +44,20 @@ public class Cord implements Element{
         Paint paint = new Paint();
         paint.setColor(this.color);
         canvas.drawRect(this.shape, paint);
+    }
+
+    public void touchHandler(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
+
+        if (isActivated) {
+            if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                if (y >= shape.top && x >= shape.left && y <= shape.bottom && x <= shape.right) {
+                    System.out.println("dragged");
+                } else {
+                    System.out.println("failed to drag");
+                }
+            }
+        }
     }
 }

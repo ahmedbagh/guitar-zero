@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
@@ -59,8 +60,8 @@ public class Level_1 {
     }
 
     public void update() {
-        System.out.println("light :" + lightSensorActivity.getLuminosity());
-        //System.out.println("accelerometre: " + accelerometerSensorActivity.getAccelerometerValue()[0]);
+        // System.out.println("light :" + lightSensorActivity.getLuminosity());
+        // System.out.println("accelerometre: " + String.valueOf(accelerometerSensorActivity.getAccelerometerValue()[0]));
     }
 
     public void draw(Canvas canvas) {
@@ -74,5 +75,9 @@ public class Level_1 {
         editor.commit();
 
         return false;
+    }
+
+    public void toucheHandler(MotionEvent event){
+        cord.touchHandler(event);
     }
 }

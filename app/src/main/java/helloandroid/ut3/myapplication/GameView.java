@@ -76,7 +76,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        return false;
+        level_1.toucheHandler(event);
+
+        return true;
     }
 
     @Override
