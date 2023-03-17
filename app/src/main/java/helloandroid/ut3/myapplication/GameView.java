@@ -2,10 +2,9 @@ package helloandroid.ut3.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
+import android.hardware.SensorManager;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -15,10 +14,19 @@ import androidx.annotation.NonNull;
 
 import helloandroid.ut3.myapplication.elements.Cord;
 
+import helloandroid.ut3.myapplication.levels.Level_1;
+import helloandroid.ut3.myapplication.sensors.AccelerometerSensorActivity;
+import helloandroid.ut3.myapplication.sensors.LightSensorActivity;
+
 public class GameView extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
 
 
     private final GameThread thread;
+    private final Level_1 level_1;
+    private final SensorManager sensorManager;
+    private final LightSensorActivity lightSensorActivity;
+    private final AccelerometerSensorActivity accelerometerSensorActivity;
+
 
     private Cord cord;
 
@@ -31,12 +39,21 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
         // Initialize objects
         this.cord = new Cord(200, 250, 25, 1250, getContext());
+        sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+
+        //Light Sensor initialisation
+        lightSensorActivity = new LightSensorActivity(sensorManager);
+        accelerometerSensorActivity = new AccelerometerSensorActivity(sensorManager);
+
+        level_1 = new Level_1(context, lightSensorActivity, accelerometerSensorActivity);
     }
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
         thread.setRunning(true);
         thread.start();
+        lightSensorActivity.onResume();
+        accelerometerSensorActivity.onResume();
     }
 
     @Override
@@ -56,6 +73,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
             }
             retry = false;
         }
+        lightSensorActivity.onPause();
+        accelerometerSensorActivity.onPause();
     }
 
     @Override
@@ -73,21 +92,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     }
 
     public void update() {
-//        if (currentLevel.isFinished()) {
-//            stopGame();
-//        } else {
-//            currentLevel.update();
-//        }
+        if (level_1.isFinished()) {
+            stopGame();
+        } else {
+            level_1.update();
+        }
     }
 
     public void stopGame() {
-//        SharedPreferences saved_values = PreferenceManager.getDefaultSharedPreferences(getContext());
-//        SharedPreferences.Editor editor = saved_values.edit();
-//        editor.putInt("current_score", (int) (System.currentTimeMillis() - startTime));
-//        editor.commit();
-//
 //        this.surfaceDestroyed(this.getHolder());
-//        Intent intent = new Intent(getContext(), ScoreActivity.class); // replace AnotherActivity with the name of your desired activity
+//        Intent intent = new Intent(getContext(), ScoreActivity.class);
 //        getContext().startActivity(intent);
     }
 }
