@@ -6,6 +6,7 @@
     <string name="instructions">
         - Gratter les cordes quand elles s\'allument. \n
         - Quand les 4 cordes s\'allument SECOUEZ le telephone. \n
-        - Vous avez 2 minutues.
+        - Vous avez 2 minutes.
+        - La difficulté depend de la luminosité de l'environnement
     </string>
 </resources>
