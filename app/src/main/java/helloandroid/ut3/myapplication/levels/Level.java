@@ -18,8 +18,11 @@ import helloandroid.ut3.myapplication.sensors.AccelerometerSensorActivity;
 import helloandroid.ut3.myapplication.sensors.LightSensorActivity;
 
 public class Level {
-
     public static final int NUMBER_CORDS = 4;
+    public static int EASY_LEVEL_FREQUENCY = 2000;
+    public static int MEDIUM_LEVEL_FREQUENCY = 1500;
+    public static int HARD_LEVEL_FREQUENCY = 1000;
+
 
     private final Context context;
     private final LightSensorActivity lightSensorActivity;
@@ -36,7 +39,7 @@ public class Level {
     private float cordHeight;
     private float cordWidth;
 
-    private int frequence = 1500;
+    private int frequence = HARD_LEVEL_FREQUENCY;
 
     private boolean isGreenOrRed = false;
 
@@ -116,7 +119,13 @@ public class Level {
         // System.out.println("accelerometre: " + String.valueOf(accelerometerSensorActivity.getAccelerometerValue()[0]));
 
         long currentTime = System.currentTimeMillis();
-
+        if( this.lightSensorActivity.getLuminosity() < 40) {
+            this.frequence = HARD_LEVEL_FREQUENCY;
+        } else if (this.lightSensorActivity.getLuminosity() >= 40 && this.lightSensorActivity.getLuminosity() < 150) {
+            this.frequence = MEDIUM_LEVEL_FREQUENCY;
+        } else if (this.lightSensorActivity.getLuminosity() >= 150) {
+            this.frequence = EASY_LEVEL_FREQUENCY;
+        }
 
     }
 
@@ -145,5 +154,9 @@ public class Level {
 
     public void toucheHandler(MotionEvent event) {
         this.guitar.forEach(cord -> cord.touchHandler(event));
+    }
+
+    public int getFrequence() {
+        return frequence;
     }
 }

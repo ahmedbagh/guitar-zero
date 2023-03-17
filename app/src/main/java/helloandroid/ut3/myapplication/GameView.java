@@ -101,6 +101,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
             int yPos = (int) ((headerHeight / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
             canvas.drawText("Score :" + String.valueOf(level_.getScore()), xPos, yPos, textPaint);
 
+            textPaint.setTextAlign(Paint.Align.LEFT);
+            xPos = 0;
+            yPos = (int) ((headerHeight / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
+            if (level_.getFrequence() == Level.EASY_LEVEL_FREQUENCY) {
+                canvas.drawText("Level: EASY" , xPos, yPos, textPaint);
+            }
+            if (level_.getFrequence() == Level.MEDIUM_LEVEL_FREQUENCY) {
+                canvas.drawText("Level: MEDIUM" , xPos, yPos, textPaint);
+            }
+            if (level_.getFrequence() == Level.HARD_LEVEL_FREQUENCY) {
+                canvas.drawText("Level: HARD" , xPos, yPos, textPaint);
+            }
+
             level_.draw(canvas);
         }
     }
