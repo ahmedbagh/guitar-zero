@@ -1,6 +1,5 @@
 package helloandroid.ut3.myapplication.elements;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,7 +12,6 @@ import helloandroid.ut3.myapplication.levels.Level;
 public class Cord {
 
     private final Rect shape;
-    private final Context context;
     private final Level level;
     MediaPlayer mediaPlayer;
     private int color;
@@ -21,9 +19,8 @@ public class Cord {
     private boolean allActivated = false;
     private State state;
 
-    public Cord(Rect shape, Context context, Level level, MediaPlayer mediaPlayer) {
+    public Cord(Rect shape, Level level, MediaPlayer mediaPlayer) {
         this.shape = shape;
-        this.context = context;
         this.level = level;
         this.color = Color.WHITE;
         this.state = State.IS_NOT_ACTIVATED;
@@ -31,10 +28,9 @@ public class Cord {
         lineX = this.shape.left;
     }
 
-    public Cord(float xPos, float yPos, float width, float height, Context context, Level level, MediaPlayer mediaPlayer) {
+    public Cord(float xPos, float yPos, float width, float height, Level level, MediaPlayer mediaPlayer) {
         this(
                 new Rect((int) xPos, (int) yPos, (int) (xPos + width), (int) (yPos + height)),
-                context,
                 level,
                 mediaPlayer
         );
@@ -54,19 +50,15 @@ public class Cord {
                 color = Color.WHITE;
                 this.state = State.IS_NOT_ACTIVATED;
                 break;
-            case IS_RED:
+            case IS_WRONG:
                 color = Color.RED;
-                this.state = State.IS_RED;
+                this.state = State.IS_WRONG;
                 break;
-            case IS_GREEN:
+            case IS_PLAYING:
                 color = Color.GREEN;
-                this.state = State.IS_GREEN;
+                this.state = State.IS_PLAYING;
                 break;
         }
-    }
-
-    public boolean getAllActivated() {
-        return allActivated;
     }
 
     public void setAllActivated(boolean allActivated) {
@@ -86,7 +78,7 @@ public class Cord {
         canvas.drawLine(lineX + this.shape.width() / 2, this.shape.top, lineX + this.shape.width() / 2, this.shape.bottom, linePaint);
 
         // Update the position of the line
-        if (this.state == State.IS_GREEN) {
+        if (this.state == State.IS_PLAYING) {
             lineX = (float) (this.shape.left + Math.sin(System.currentTimeMillis() / 100.0) * 25);
         } else {
             this.lineX = this.shape.left;
@@ -100,19 +92,18 @@ public class Cord {
             float y = event.getY();
 
             if (state == State.IS_ACTIVATED) {
-                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                if (event.getAction() == MotionEvent.ACTION_MOVE) { // Correct chord
                     if (y >= shape.top && x >= shape.left && y <= shape.bottom && x <= shape.right) {
                         level.draggedCord(true);
                         playSound();
-                        System.out.println("dragged");
                     }
                 }
             }
+
             if (state == State.IS_NOT_ACTIVATED) {
-                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                if (event.getAction() == MotionEvent.ACTION_MOVE) { // Wrong chord
                     if (y >= shape.top && x >= shape.left && y <= shape.bottom && x <= shape.right) {
                         level.draggedCord(false);
-                        System.out.println("dragged");
                     }
                 }
             }
@@ -131,7 +122,7 @@ public class Cord {
     public enum State {
         IS_ACTIVATED,
         IS_NOT_ACTIVATED,
-        IS_GREEN,
-        IS_RED
+        IS_PLAYING,
+        IS_WRONG
     }
 }

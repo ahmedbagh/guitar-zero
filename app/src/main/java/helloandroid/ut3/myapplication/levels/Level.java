@@ -45,7 +45,7 @@ public class Level {
     private final Runnable mRunnableCordActivation = new Runnable() {
         public void run() {
             guitar.forEach(cord -> {
-                if (cord.getState() == Cord.State.IS_GREEN || cord.getState() == Cord.State.IS_RED) {
+                if (cord.getState() == Cord.State.IS_PLAYING || cord.getState() == Cord.State.IS_WRONG) {
                     isGreenOrRed = true;
                 }
             });
@@ -81,7 +81,7 @@ public class Level {
             mHandler.postDelayed(() -> {
                 if (selectedCord.getState() == Cord.State.IS_ACTIVATED) {
                     guitar.forEach(c -> {
-                        c.setState(Cord.State.IS_RED);
+                        c.setState(Cord.State.IS_WRONG);
                         c.setAllActivated(false);
                     });
                     allActivated = false;
@@ -98,7 +98,7 @@ public class Level {
             selectedCord.setState(Cord.State.IS_ACTIVATED);
             mHandler.postDelayed(() -> {
                 if (selectedCord.getState() == Cord.State.IS_ACTIVATED) {
-                    selectedCord.setState(Cord.State.IS_RED);
+                    selectedCord.setState(Cord.State.IS_WRONG);
                     score -= 1;
                 }
             }, frequence - frequence / 4);
@@ -139,17 +139,17 @@ public class Level {
 
         int x = screenWidth / 6;
 
-        guitar.add(new Cord(x + 0 * screenWidth / 5, headerHeight, cordWidth, cordHeight, context, this, MediaPlayer.create(context, R.raw.a_chord)));
-        guitar.add(new Cord(x + 1 * screenWidth / 5, headerHeight, cordWidth, cordHeight, context, this, MediaPlayer.create(context, R.raw.c_chord)));
-        guitar.add(new Cord(x + 2 * screenWidth / 5, headerHeight, cordWidth, cordHeight, context, this, MediaPlayer.create(context, R.raw.d_chord)));
-        guitar.add(new Cord(x + 3 * screenWidth / 5, headerHeight, cordWidth, cordHeight, context, this, MediaPlayer.create(context, R.raw.g_chord)));
+        guitar.add(new Cord(x + 0 * screenWidth / 5, headerHeight, cordWidth, cordHeight, this, MediaPlayer.create(context, R.raw.a_chord)));
+        guitar.add(new Cord(x + 1 * screenWidth / 5, headerHeight, cordWidth, cordHeight, this, MediaPlayer.create(context, R.raw.c_chord)));
+        guitar.add(new Cord(x + 2 * screenWidth / 5, headerHeight, cordWidth, cordHeight, this, MediaPlayer.create(context, R.raw.d_chord)));
+        guitar.add(new Cord(x + 3 * screenWidth / 5, headerHeight, cordWidth, cordHeight, this, MediaPlayer.create(context, R.raw.g_chord)));
     }
 
     public void update() {
         float currentX = accelerometerSensorActivity.getAccelerometerValue()[0];
         if (allActivated && Math.abs(currentX - xValue) > 5) {
             guitar.forEach(cord -> {
-                cord.setState(Cord.State.IS_GREEN);
+                cord.setState(Cord.State.IS_PLAYING);
                 cord.setAllActivated(false);
                 cord.playSound();
             });
@@ -169,10 +169,10 @@ public class Level {
 
     public void draggedCord(boolean draggedCord) {
         if (draggedCord) {
-            selectedCord.setState(Cord.State.IS_GREEN);
+            selectedCord.setState(Cord.State.IS_PLAYING);
             score += 1;
         } else {
-            guitar.forEach(c -> c.setState(Cord.State.IS_RED));
+            guitar.forEach(c -> c.setState(Cord.State.IS_WRONG));
             score -= 1;
         }
     }
