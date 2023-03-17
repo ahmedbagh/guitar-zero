@@ -41,7 +41,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         lightSensorActivity = new LightSensorActivity(sensorManager);
         accelerometerSensorActivity = new AccelerometerSensorActivity(sensorManager);
 
-        level = new Level(context, this, lightSensorActivity, accelerometerSensorActivity);
+        level = new Level(context, lightSensorActivity, accelerometerSensorActivity);
         header = new Header(context, level);
     }
 

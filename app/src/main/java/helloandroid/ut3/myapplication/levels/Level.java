@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -32,9 +31,6 @@ public class Level {
     private final int screenWidth;
     private final int screenHeight;
     private final Handler mHandler = new Handler();
-    private final float cordWidth;
-    private final View view;
-    private final float cordHeight;
     float xValue = 0;
     private int score = 5;
     private ArrayList<Cord> guitar;
@@ -42,6 +38,8 @@ public class Level {
     private int frequence = HARD_LEVEL_FREQUENCY;
     private boolean isGreenOrRed = false;
     private boolean allActivated = false;
+
+
     private final Runnable mRunnableCordActivation = new Runnable() {
         public void run() {
             guitar.forEach(cord -> {
@@ -107,21 +105,17 @@ public class Level {
         }
     };
 
-    public Level(Context context, View view, LightSensorActivity lightSensorActivity, AccelerometerSensorActivity accelerometerSensorActivity) {
+    public Level(Context context, LightSensorActivity lightSensorActivity, AccelerometerSensorActivity accelerometerSensorActivity) {
         this.context = context;
         this.lightSensorActivity = lightSensorActivity;
         this.accelerometerSensorActivity = accelerometerSensorActivity;
 
-        this.view = view;
-
+        // Get screen height & width
         Activity activity = (Activity) context;
         DisplayMetrics displayMetrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screenHeight = displayMetrics.heightPixels;
         screenWidth = displayMetrics.widthPixels;
-
-        this.cordWidth = screenWidth / 20;
-        this.cordHeight = (float) (screenHeight);
 
         initElements();
 
@@ -135,8 +129,9 @@ public class Level {
     private void initElements() {
         this.guitar = new ArrayList<>();
 
+        float cordWidth = screenWidth / 20;
+        float cordHeight = (float) (screenHeight);
         int headerHeight = context.getResources().getDimensionPixelSize(R.dimen.header_height);
-
         int x = screenWidth / 6;
 
         guitar.add(new Cord(x + 0 * screenWidth / 5, headerHeight, cordWidth, cordHeight, this, MediaPlayer.create(context, R.raw.a_chord)));
