@@ -30,6 +30,7 @@ public class Level {
     private final int screenWidth;
     private final int screenHeight;
     private final Handler mHandler = new Handler();
+    private int score = 0;
 
     private ArrayList<Cord> guitar;
     private Cord selectedCord;
@@ -65,6 +66,7 @@ public class Level {
                 mHandler.postDelayed(()-> {
                     if(selectedCord.getState() == Cord.State.IS_ACTIVATED){
                         selectedCord.setState(Cord.State.IS_RED);
+                        score -= 1;
                     }
                 },frequence - frequence/4);
                 isGreenOrRed = false;
@@ -93,6 +95,10 @@ public class Level {
         initElements();
 
         mHandler.post(mRunnableCordActivation);
+    }
+
+    public int getScore() {
+        return score;
     }
 
     private void initElements() {
@@ -126,8 +132,10 @@ public class Level {
     public void draggedCord(boolean draggedCord) {
         if (draggedCord) {
             selectedCord.setState(Cord.State.IS_GREEN);
+            score += 1;
         } else {
             guitar.forEach(c -> c.setState(Cord.State.IS_RED));
+            score -= 1;
         }
         isDraggedCord = draggedCord;
     }
@@ -139,10 +147,9 @@ public class Level {
     public boolean isFinished() {
         SharedPreferences saved_values = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = saved_values.edit();
-        editor.putInt("score", 0);
+        editor.putInt("current_score", score);
         editor.commit();
-
-        return false;
+        return score<0 || score > 10;
     }
 
     public void toucheHandler(MotionEvent event) {
