@@ -35,7 +35,7 @@ public class AccelerometerSensorActivity implements SensorEventListener {
         sensorManager.unregisterListener(this);
     }
 
-    public float[] getLuminosity() {
+    public float[] getAccelerometerValue() {
         return values;
     }
 
