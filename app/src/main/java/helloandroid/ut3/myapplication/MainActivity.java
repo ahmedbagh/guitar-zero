@@ -46,10 +46,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         guideBtn.setOnClickListener(v -> {
-//            Intent intent = new Intent(this, GuideActivity.class);
-//            startActivity(intent);
-            Toast.makeText(this, "Guide",
-                    Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, GuideActivity.class);
+            startActivity(intent);
         });
     }
 }

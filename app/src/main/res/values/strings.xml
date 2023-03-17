@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="instructions">- Inclinez votre téléphone pour déplacer la balle à travers le labyrinthe attention aux obstacles et aux pièges!
+    \n - Utilisez vos doigts pour déplacer les piéges \n Amusez-vous bien! </string>
 </resources>
