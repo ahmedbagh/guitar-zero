@@ -7,12 +7,51 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/gameTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="228dp"
+        android:text="Marble Game"
+        android:textColor="@color/yellow"
+        android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/playBtn"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:text="Play"
+        android:textSize="24sp"
+        android:textColor="@color/yellow"
+        android:backgroundTint="@color/yellow_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gameTitle" />
+
+    <Button
+        android:id="@+id/scoreBtn"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:text="Score"
+        android:textSize="24sp"
+        android:backgroundTint="@color/yellow_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/playBtn" />
+
+    <Button
+        android:id="@+id/guideBtn"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:text="Guide"
+        android:textSize="24sp"
+        android:backgroundTint="@color/yellow_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scoreBtn" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
