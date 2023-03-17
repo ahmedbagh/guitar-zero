@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 
+import helloandroid.ut3.myapplication.elements.Cord;
 import helloandroid.ut3.myapplication.sensors.AccelerometerSensorActivity;
 import helloandroid.ut3.myapplication.sensors.LightSensorActivity;
 
@@ -17,6 +19,8 @@ public class Level_1 {
     private final AccelerometerSensorActivity accelerometerSensorActivity;
     private final int screenWidth;
     private final int screenHeight;
+
+    private Cord cord;
 
     public Level_1(Context context, LightSensorActivity lightSensorActivity, AccelerometerSensorActivity accelerometerSensorActivity1) {
         this.context = context;
@@ -33,16 +37,16 @@ public class Level_1 {
     }
 
     private void initElements() {
-
+        this.cord = new Cord(200, 200, 500, 1250, context);
     }
 
     public void update() {
-        System.out.println("light :" + lightSensorActivity.getLuminosity());
-        System.out.println("accelerometre: " + accelerometerSensorActivity.getAccelerometerValue()[0]);
+        // System.out.println("light :" + lightSensorActivity.getLuminosity());
+        // System.out.println("accelerometre: " + String.valueOf(accelerometerSensorActivity.getAccelerometerValue()[0]));
     }
 
     public void draw(Canvas canvas) {
-
+        cord.draw(canvas);
     }
 
     public boolean isFinished() {
@@ -52,5 +56,9 @@ public class Level_1 {
         editor.commit();
 
         return false;
+    }
+
+    public void toucheHandler(MotionEvent event){
+        cord.touchHandler(event);
     }
 }
