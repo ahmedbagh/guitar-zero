@@ -1,12 +1,11 @@
 <resources>
     <string name="app_name">Guitar Zero</string>
-    <!--    <string name="instructions">- Inclinez votre téléphone pour déplacer la balle à travers le labyrinthe attention aux obstacles et aux pièges!-->
-    <!--    \n - Utilisez vos doigts pour déplacer les piéges \n Amusez-vous bien! </string>-->
 
     <string name="instructions">
-        - Gratter les cordes quand elles s\'allument. \n
-        - Quand les 4 cordes s\'allument SECOUEZ le telephone. \n
-        - Vous avez 2 minutes.
-        - La difficulté depend de la luminosité de l'environnement
+        - Gratter les cordes quand elles s\'allument. \n \n
+        - Quand les 4 cordes s\'allument SECOUEZ le telephone. \n \n
+        - Vous avez 2 minutes. \n \n
+        - La difficulté depend de la luminosité de l\'environnement
     </string>
+
 </resources>
