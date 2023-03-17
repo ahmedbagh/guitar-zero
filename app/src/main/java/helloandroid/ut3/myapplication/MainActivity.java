@@ -31,10 +31,8 @@ public class MainActivity extends AppCompatActivity {
         Button guideBtn = findViewById(R.id.guideBtn);
 
         playBtn.setOnClickListener(v -> {
-//            Intent intent = new Intent(v.getContext(), GameActivity.class);
-//            startActivity(intent);
-            Toast.makeText(this, "Start game",
-                    Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(v.getContext(), GameActivity.class);
+            startActivity(intent);
         });
 
 
