@@ -27,9 +27,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     private final LightSensorActivity lightSensorActivity;
     private final AccelerometerSensorActivity accelerometerSensorActivity;
 
-
-    private Cord cord;
-
     public GameView(Context context) {
         super(context);
         getHolder().addCallback(this);
@@ -37,8 +34,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         setFocusable(true);
         setOnTouchListener(this);
 
-        // Initialize objects
-        this.cord = new Cord(200, 250, 25, 1250, getContext());
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 
         //Light Sensor initialisation
@@ -87,7 +82,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         if (canvas != null) {
             super.draw(canvas);
             canvas.drawColor(Color.rgb(55, 48, 107));
-            this.cord.draw(canvas);
+            level_1.draw(canvas);
         }
     }
 
