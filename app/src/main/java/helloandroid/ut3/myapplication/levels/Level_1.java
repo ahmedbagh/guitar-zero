@@ -78,6 +78,6 @@ public class Level_1 {
     }
 
     public void toucheHandler(MotionEvent event){
-        cord.touchHandler(event);
+        this.guitar.forEach(cord -> cord.touchHandler(event)) ;
     }
 }
