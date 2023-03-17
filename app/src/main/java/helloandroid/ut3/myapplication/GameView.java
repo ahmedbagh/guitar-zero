@@ -13,10 +13,14 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import helloandroid.ut3.myapplication.elements.Cord;
+
 public class GameView extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
 
 
     private final GameThread thread;
+
+    private Cord cord;
 
     public GameView(Context context) {
         super(context);
@@ -24,6 +28,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         thread = new GameThread(getHolder(), this);
         setFocusable(true);
         setOnTouchListener(this);
+
+        // Initialize objects
+        this.cord = new Cord(200, 250, 25, 1250, getContext());
     }
 
     @Override
@@ -61,6 +68,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         if (canvas != null) {
             super.draw(canvas);
             canvas.drawColor(Color.rgb(55, 48, 107));
+            this.cord.draw(canvas);
         }
     }
 
