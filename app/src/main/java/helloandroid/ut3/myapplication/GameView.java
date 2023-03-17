@@ -1,7 +1,6 @@
 package helloandroid.ut3.myapplication;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,9 +13,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import helloandroid.ut3.myapplication.elements.Cord;
-
-import helloandroid.ut3.myapplication.levels.Level_1;
+import helloandroid.ut3.myapplication.levels.Level;
 import helloandroid.ut3.myapplication.sensors.AccelerometerSensorActivity;
 import helloandroid.ut3.myapplication.sensors.LightSensorActivity;
 
@@ -24,7 +21,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
 
     private final GameThread thread;
-    private final Level_1 level_1;
+    private final Level level_;
     private final SensorManager sensorManager;
     private final LightSensorActivity lightSensorActivity;
     private final AccelerometerSensorActivity accelerometerSensorActivity;
@@ -42,7 +39,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         lightSensorActivity = new LightSensorActivity(sensorManager);
         accelerometerSensorActivity = new AccelerometerSensorActivity(sensorManager);
 
-        level_1 = new Level_1(context, lightSensorActivity, accelerometerSensorActivity);
+        level_ = new Level(context, lightSensorActivity, accelerometerSensorActivity);
     }
 
     @Override
@@ -76,7 +73,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        level_1.toucheHandler(event);
+        level_.toucheHandler(event);
 
         return true;
     }
@@ -103,15 +100,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
             int yPos = (int) ((headerHeight / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
             canvas.drawText("Score : x", xPos, yPos, textPaint);
 
-            level_1.draw(canvas);
+            level_.draw(canvas);
         }
     }
 
     public void update() {
-        if (level_1.isFinished()) {
+        if (level_.isFinished()) {
             stopGame();
         } else {
-            level_1.update();
+            level_.update();
         }
     }
 
