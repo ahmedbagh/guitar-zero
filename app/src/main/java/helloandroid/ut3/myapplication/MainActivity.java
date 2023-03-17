@@ -39,10 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         scoreBtn.setOnClickListener(v -> {
-//            Intent intent = new Intent(v.getContext(), ScoreActivity.class);
-//            startActivity(intent);
-            Toast.makeText(this, "Score",
-                    Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(v.getContext(), ScoreActivity.class);
+            startActivity(intent);
         });
 
         guideBtn.setOnClickListener(v -> {
