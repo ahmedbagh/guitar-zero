@@ -10,60 +10,38 @@ import android.view.MotionEvent;
 
 import helloandroid.ut3.myapplication.levels.Level;
 
-public class Cord implements Element {
+public class Cord {
 
-    private Rect shape;
-
-    private Context context;
-
-    private Level level;
-
+    private final Rect shape;
+    private final Context context;
+    private final Level level;
+    MediaPlayer mediaPlayer;
     private int color;
     private float lineX;
-
     private boolean allActivated = false;
-
-    MediaPlayer mediaPlayer;
-
-    public enum State {
-        IS_ACTIVATED,
-        IS_NOT_ACTIVATED,
-        IS_GREEN,
-        IS_RED
-    }
-
     private State state;
 
-    public Cord(Rect shape, int color, Context context, Level level, MediaPlayer mediaPlayer) {
+    public Cord(Rect shape, Context context, Level level, MediaPlayer mediaPlayer) {
         this.shape = shape;
         this.context = context;
         this.level = level;
-        this.color = color;
+        this.color = Color.WHITE;
         this.state = State.IS_NOT_ACTIVATED;
         this.mediaPlayer = mediaPlayer;
         lineX = this.shape.left;
     }
 
-    public State getState() {
-        return state;
-    }
-
     public Cord(float xPos, float yPos, float width, float height, Context context, Level level, MediaPlayer mediaPlayer) {
         this(
                 new Rect((int) xPos, (int) yPos, (int) (xPos + width), (int) (yPos + height)),
-                Color.WHITE,
                 context,
                 level,
                 mediaPlayer
         );
     }
 
-    public boolean getAllActivated() {
-        return allActivated;
-    }
-
-    public void setAllActivated(boolean allActivated) {
-        this.allActivated = allActivated;
+    public State getState() {
+        return state;
     }
 
     public void setState(State state) {
@@ -87,12 +65,18 @@ public class Cord implements Element {
         }
     }
 
-    @Override
+    public boolean getAllActivated() {
+        return allActivated;
+    }
+
+    public void setAllActivated(boolean allActivated) {
+        this.allActivated = allActivated;
+    }
+
     public void update() {
 
     }
 
-    @Override
     public void draw(Canvas canvas) {
 //        Paint paint = new Paint();
 //        paint.setColor(Color.WHITE);
@@ -140,11 +124,18 @@ public class Cord implements Element {
 
     }
 
-
     public void playSound() {
-        if (mediaPlayer.isPlaying()){
+        if (mediaPlayer.isPlaying()) {
             mediaPlayer.seekTo(0);
         }
         mediaPlayer.start();
+    }
+
+
+    public enum State {
+        IS_ACTIVATED,
+        IS_NOT_ACTIVATED,
+        IS_GREEN,
+        IS_RED
     }
 }

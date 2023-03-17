@@ -4,17 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
-import android.graphics.Point;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -25,11 +22,9 @@ import helloandroid.ut3.myapplication.sensors.AccelerometerSensorActivity;
 import helloandroid.ut3.myapplication.sensors.LightSensorActivity;
 
 public class Level {
-    public static final int NUMBER_CORDS = 4;
     public static int EASY_LEVEL_FREQUENCY = 2000;
     public static int MEDIUM_LEVEL_FREQUENCY = 1500;
     public static int HARD_LEVEL_FREQUENCY = 1000;
-
 
     private final Context context;
     private final LightSensorActivity lightSensorActivity;
@@ -37,28 +32,18 @@ public class Level {
     private final int screenWidth;
     private final int screenHeight;
     private final Handler mHandler = new Handler();
+    private final float cordWidth;
+    private final View view;
+    private final float cordHeight;
+    float xValue = 0;
     private int score = 5;
-
     private ArrayList<Cord> guitar;
     private Cord selectedCord;
-    private boolean isDraggedCord = false;
-
-    private float cordHeight;
-    private float cordWidth;
-
     private int frequence = HARD_LEVEL_FREQUENCY;
-
     private boolean isGreenOrRed = false;
-
     private boolean allActivated = false;
-
-    private View view;
-
     private final Runnable mRunnableCordActivation = new Runnable() {
         public void run() {
-            if (isFinished()) {
-                return;
-            }
             guitar.forEach(cord -> {
                 if (cord.getState() == Cord.State.IS_GREEN || cord.getState() == Cord.State.IS_RED) {
                     isGreenOrRed = true;
@@ -69,45 +54,56 @@ public class Level {
                 isGreenOrRed = false;
                 mHandler.postDelayed(this, frequence / 5);
             } else {
-                guitar.forEach(c -> c.setState(Cord.State.IS_NOT_ACTIVATED));
-                Random random = new Random();
-                int randomNumber = random.nextInt(5);
-
-                if (randomNumber != 4) {
-                    selectedCord = guitar.get(randomNumber);
-                    selectedCord.setState(Cord.State.IS_ACTIVATED);
-                    mHandler.postDelayed(() -> {
-                        if (selectedCord.getState() == Cord.State.IS_ACTIVATED) {
-                            selectedCord.setState(Cord.State.IS_RED);
-                            score -= 1;
-                        }
-                    }, frequence - frequence / 4);
-                    isGreenOrRed = false;
-                    mHandler.postDelayed(this, frequence);
-                } else {
-                    selectedCord = guitar.get(0);
-                    guitar.forEach(c -> {
-                        c.setState(Cord.State.IS_ACTIVATED);
-                        c.setAllActivated(true);
-                    });
-                    allActivated = true;
-                    mHandler.postDelayed(() -> {
-                        if (selectedCord.getState() == Cord.State.IS_ACTIVATED) {
-                            guitar.forEach(c -> {
-                                c.setState(Cord.State.IS_RED);
-                                c.setAllActivated(false);
-                            });
-                            allActivated = false;
-                            score -= 1;
-                        }
-
-                    }, frequence - frequence / 4);
-
-                    mHandler.postDelayed(this, frequence);
-
-                }
+                doCycle();
             }
 
+        }
+
+        private void doCycle() {
+            guitar.forEach(c -> c.setState(Cord.State.IS_NOT_ACTIVATED));
+            Random random = new Random();
+            int randomNumber = random.nextInt(5);
+
+            if (randomNumber != 4) {
+                startOneCord(randomNumber);
+            } else {
+                startAllCords();
+            }
+        }
+
+        private void startAllCords() {
+            selectedCord = guitar.get(0);
+            guitar.forEach(c -> {
+                c.setState(Cord.State.IS_ACTIVATED);
+                c.setAllActivated(true);
+            });
+            allActivated = true;
+            mHandler.postDelayed(() -> {
+                if (selectedCord.getState() == Cord.State.IS_ACTIVATED) {
+                    guitar.forEach(c -> {
+                        c.setState(Cord.State.IS_RED);
+                        c.setAllActivated(false);
+                    });
+                    allActivated = false;
+                    score -= 1;
+                }
+
+            }, frequence - frequence / 4);
+
+            mHandler.postDelayed(this, frequence);
+        }
+
+        private void startOneCord(int randomNumber) {
+            selectedCord = guitar.get(randomNumber);
+            selectedCord.setState(Cord.State.IS_ACTIVATED);
+            mHandler.postDelayed(() -> {
+                if (selectedCord.getState() == Cord.State.IS_ACTIVATED) {
+                    selectedCord.setState(Cord.State.IS_RED);
+                    score -= 1;
+                }
+            }, frequence - frequence / 4);
+            isGreenOrRed = false;
+            mHandler.postDelayed(this, frequence);
         }
     };
 
@@ -127,8 +123,6 @@ public class Level {
         this.cordWidth = screenWidth / 20;
         this.cordHeight = (float) (screenHeight);
 
-        this.guitar = new ArrayList<>();
-
         initElements();
 
         mHandler.post(mRunnableCordActivation);
@@ -143,22 +137,17 @@ public class Level {
 
         int headerHeight = context.getResources().getDimensionPixelSize(R.dimen.header_height);
 
+        int x = screenWidth / 6;
 
-        Point init = new Point(screenWidth / 6, headerHeight);
-
-
-        guitar.add(new Cord(init.x + 0 * screenWidth / 5, init.y, cordWidth, cordHeight, context, this, MediaPlayer.create(context, R.raw.a_chord)));
-        guitar.add(new Cord(init.x + 1 * screenWidth / 5, init.y, cordWidth, cordHeight, context, this, MediaPlayer.create(context, R.raw.c_chord)));
-        guitar.add(new Cord(init.x + 2 * screenWidth / 5, init.y, cordWidth, cordHeight, context, this, MediaPlayer.create(context, R.raw.d_chord)));
-        guitar.add(new Cord(init.x + 3 * screenWidth / 5, init.y, cordWidth, cordHeight, context, this, MediaPlayer.create(context, R.raw.g_chord)));
+        guitar.add(new Cord(x + 0 * screenWidth / 5, headerHeight, cordWidth, cordHeight, context, this, MediaPlayer.create(context, R.raw.a_chord)));
+        guitar.add(new Cord(x + 1 * screenWidth / 5, headerHeight, cordWidth, cordHeight, context, this, MediaPlayer.create(context, R.raw.c_chord)));
+        guitar.add(new Cord(x + 2 * screenWidth / 5, headerHeight, cordWidth, cordHeight, context, this, MediaPlayer.create(context, R.raw.d_chord)));
+        guitar.add(new Cord(x + 3 * screenWidth / 5, headerHeight, cordWidth, cordHeight, context, this, MediaPlayer.create(context, R.raw.g_chord)));
     }
-
-
-    float xValue = 0;
 
     public void update() {
         float currentX = accelerometerSensorActivity.getAccelerometerValue()[0];
-        if (allActivated && Math.abs(currentX - xValue) > 5) { //
+        if (allActivated && Math.abs(currentX - xValue) > 5) {
             guitar.forEach(cord -> {
                 cord.setState(Cord.State.IS_GREEN);
                 cord.setAllActivated(false);
@@ -186,15 +175,16 @@ public class Level {
             guitar.forEach(c -> c.setState(Cord.State.IS_RED));
             score -= 1;
         }
-        isDraggedCord = draggedCord;
-    }
-
-
-    public void setAllActivated(boolean allActivated) {
-        this.allActivated = allActivated;
     }
 
     public void draw(Canvas canvas) {
+        // background
+        canvas.drawColor(Color.rgb(212, 168, 83));
+        Paint paint = new Paint();
+        paint.setColor(Color.rgb(105, 66, 7));
+        canvas.drawCircle(canvas.getWidth() / 2, canvas.getHeight() / 2, (canvas.getWidth() / 3) + (canvas.getWidth() / 10), paint);
+
+        // Cords
         this.guitar.forEach(cord -> cord.draw(canvas));
     }
 
