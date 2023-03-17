@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/brown"
+    android:background="@color/color_1"
     tools:context=".ScoreActivity">
 
     <TextView
@@ -13,47 +13,50 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:text="Score"
+        android:textColor="@color/color_5"
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/BestScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ScoreTitle"
-        android:textSize="24sp"
+        android:text="The best score is: "
         android:textAlignment="center"
+        android:textColor="@color/color_5"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
 
-        android:text="The best score is: "/>
+        app:layout_constraintTop_toBottomOf="@id/ScoreTitle" />
 
     <TextView
         android:id="@+id/CurrentScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Your current score is: "
+        android:textAlignment="center"
+        android:textColor="@color/color_5"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="@id/returnHomeBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Your current score is: "
-        android:textAlignment="center"
-        android:textSize="22sp"
-        app:layout_constraintTop_toBottomOf="@+id/ScoreTitle">
-    </TextView>
+        app:layout_constraintTop_toBottomOf="@+id/ScoreTitle"></TextView>
 
     <Button
         android:id="@+id/returnHomeBtn"
         android:layout_width="214dp"
         android:layout_height="68dp"
-        android:backgroundTint="@color/yellow_1"
+        android:backgroundTint="@color/color_5"
         android:text="Main Menu"
-        android:textColor="@color/yellow"
+        android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/BestScore" />
+        app:layout_constraintTop_toBottomOf="@id/CurrentScore" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

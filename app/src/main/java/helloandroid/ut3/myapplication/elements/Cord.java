@@ -5,8 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
 
+import helloandroid.ut3.myapplication.R;
 import helloandroid.ut3.myapplication.levels.Level;
 
 public class Cord implements Element {
@@ -20,6 +22,10 @@ public class Cord implements Element {
     private int color;
     private float lineX;
 
+    private boolean allActivated = false;
+
+    MediaPlayer mediaPlayer;
+
     public enum State {
         IS_ACTIVATED,
         IS_NOT_ACTIVATED,
@@ -29,12 +35,13 @@ public class Cord implements Element {
 
     private State state;
 
-    public Cord(Rect shape, int color, Context context, Level level) {
+    public Cord(Rect shape, int color, Context context, Level level, MediaPlayer mediaPlayer) {
         this.shape = shape;
         this.context = context;
         this.level = level;
         this.color = color;
         this.state = State.IS_NOT_ACTIVATED;
+        this.mediaPlayer = mediaPlayer;
         lineX = this.shape.left;
     }
 
@@ -42,23 +49,32 @@ public class Cord implements Element {
         return state;
     }
 
-    public Cord(float xPos, float yPos, float width, float height, Context context, Level level) {
+    public Cord(float xPos, float yPos, float width, float height, Context context, Level level, MediaPlayer mediaPlayer) {
         this(
                 new Rect((int) xPos, (int) yPos, (int) (xPos + width), (int) (yPos + height)),
-                Color.GRAY,
+                Color.WHITE,
                 context,
-                level
+                level,
+                mediaPlayer
         );
+    }
+
+    public boolean getAllActivated() {
+        return allActivated;
+    }
+
+    public void setAllActivated(boolean allActivated) {
+        this.allActivated = allActivated;
     }
 
     public void setState(State state) {
         switch (state) {
             case IS_ACTIVATED:
-                color = Color.rgb(255, 165, 0);
+                color = Color.rgb(152, 108, 80);
                 this.state = State.IS_ACTIVATED;
                 break;
             case IS_NOT_ACTIVATED:
-                color = Color.GRAY;
+                color = Color.WHITE;
                 this.state = State.IS_NOT_ACTIVATED;
                 break;
             case IS_RED:
@@ -98,24 +114,32 @@ public class Cord implements Element {
     }
 
     public void touchHandler(MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
+        if (!allActivated) {
+            float x = event.getX();
+            float y = event.getY();
 
-        if (state == State.IS_ACTIVATED) {
-            if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                if (y >= shape.top && x >= shape.left && y <= shape.bottom && x <= shape.right) {
-                    level.draggedCord(true);
-                    System.out.println("dragged");
+            if (state == State.IS_ACTIVATED) {
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    if (y >= shape.top && x >= shape.left && y <= shape.bottom && x <= shape.right) {
+                        level.draggedCord(true);
+                        if(mediaPlayer.isPlaying()){
+                            mediaPlayer.reset();
+                        } else {
+                            mediaPlayer.start();
+                        }
+                        System.out.println("dragged");
+                    }
+                }
+            }
+            if (state == State.IS_NOT_ACTIVATED) {
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    if (y >= shape.top && x >= shape.left && y <= shape.bottom && x <= shape.right) {
+                        level.draggedCord(false);
+                        System.out.println("dragged");
+                    }
                 }
             }
         }
-        if (state == State.IS_NOT_ACTIVATED) {
-            if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                if (y >= shape.top && x >= shape.left && y <= shape.bottom && x <= shape.right) {
-                    level.draggedCord(false);
-                    System.out.println("dragged");
-                }
-            }
-        }
+
     }
 }

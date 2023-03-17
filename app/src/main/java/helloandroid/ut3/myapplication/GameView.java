@@ -40,7 +40,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         lightSensorActivity = new LightSensorActivity(sensorManager);
         accelerometerSensorActivity = new AccelerometerSensorActivity(sensorManager);
 
-        level_ = new Level(context, lightSensorActivity, accelerometerSensorActivity);
+        level_ = new Level(context, this, lightSensorActivity, accelerometerSensorActivity);
     }
 
     @Override
@@ -89,17 +89,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         if (canvas != null) {
             super.draw(canvas);
             Paint paint = new Paint();
-            paint.setColor(Color.rgb(255,255,255));
-            canvas.drawColor(Color.rgb(55, 48, 107));
+            paint.setColor(Color.rgb(212, 168, 83));
+            canvas.drawColor(Color.rgb(212, 168, 83));
             canvas.drawRect(clipRect, paint);
             //
             Paint textPaint = new Paint();
             textPaint.setTextAlign(Paint.Align.CENTER);
             textPaint.setTextSize(40);
+            textPaint.setColor(Color.rgb(54,41,4));
 
             int xPos = (canvas.getWidth() / 2);
             int yPos = (int) ((headerHeight / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
-            canvas.drawText("Score :" + String.valueOf(level_.getScore()), xPos, yPos, textPaint);
+            canvas.drawText("Score: " + String.valueOf(level_.getScore()), xPos, yPos, textPaint);
 
             textPaint.setTextAlign(Paint.Align.LEFT);
             xPos = 0;

@@ -8,6 +8,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="brown">#966F33</color>
-    <color name="yellow">#f6f0e5</color>
-    <color name="yellow_1">#21180b</color>
+<!--    <color name="yellow">#f6f0e5</color>-->
+<!--    <color name="yellow_1">#21180b</color>-->
+
+    <color name="color_1">#d4a853</color>
+    <color name="color_2">#ae882d</color>
+    <color name="color_3">#8d600a</color>
+    <color name="color_4">#694207</color>
+    <color name="color_5">#362904</color>
 </resources>
