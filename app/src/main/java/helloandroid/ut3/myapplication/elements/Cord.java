@@ -88,11 +88,19 @@ public class Cord implements Element {
         linePaint.setColor(Color.BLUE);
         linePaint.setStrokeWidth(4);
 
-        canvas.drawLine(lineX + this.shape.width()/2, this.shape.top, lineX + this.shape.width()/2, this.shape.bottom, linePaint);
+        canvas.drawLine(lineX, this.shape.top, lineX, this.shape.bottom, linePaint);
 
         // Update the position of the line
         if (this.state == State.IS_GREEN) {
-            lineX = (float) (this.shape.left + Math.sin(System.currentTimeMillis() / 100.0) * 25);
+            lineX = (float) (this.shape.left + Math.sin(System.currentTimeMillis() / 100.0) * 35);
+            if (lineX < this.shape.left) {
+                this.lineX = this.shape.left;
+            }
+            if (lineX > this.shape.right) {
+                this.lineX = this.shape.right;
+            }
+        } else {
+            this.lineX = this.shape.left + this.shape.width() / 2;
         }
 
     }
