@@ -30,7 +30,7 @@ public class Header {
         paint.setColor(Color.rgb(54, 41, 4));
         canvas.drawRect(headerWidth, paint);
 
-        //
+        // Score settings
         Paint textPaint = new Paint();
         textPaint.setTextAlign(Paint.Align.RIGHT);
         textPaint.setTextSize(40);
@@ -41,6 +41,7 @@ public class Header {
         int yPos = (int) ((headerHeight / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
         canvas.drawText("Score: " + level.getScore(), xPos, yPos, textPaint);
 
+        // Level difficulty settings
         textPaint.setTextAlign(Paint.Align.LEFT);
         xPos = canvas.getWidth() / 8;
         yPos = (int) ((headerHeight / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));

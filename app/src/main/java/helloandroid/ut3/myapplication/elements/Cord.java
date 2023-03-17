@@ -78,10 +78,6 @@ public class Cord {
     }
 
     public void draw(Canvas canvas) {
-//        Paint paint = new Paint();
-//        paint.setColor(Color.WHITE);
-//        canvas.drawRect(this.shape, paint);
-
         // Initialize the paint object for drawing the line
         Paint linePaint = new Paint();
         linePaint.setColor(this.color);
