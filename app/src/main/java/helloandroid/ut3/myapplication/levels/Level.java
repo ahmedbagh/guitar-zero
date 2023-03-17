@@ -9,7 +9,6 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -57,6 +56,9 @@ public class Level {
 
     private final Runnable mRunnableCordActivation = new Runnable() {
         public void run() {
+            if (isFinished()) {
+                return;
+            }
             guitar.forEach(cord -> {
                 if (cord.getState() == Cord.State.IS_GREEN || cord.getState() == Cord.State.IS_RED) {
                     isGreenOrRed = true;
@@ -123,8 +125,8 @@ public class Level {
         screenHeight = displayMetrics.heightPixels;
         screenWidth = displayMetrics.widthPixels;
 
-        this.cordWidth = screenWidth / 30;
-        this.cordHeight = (float) (screenHeight * 0.75);
+        this.cordWidth = screenWidth / 20;
+        this.cordHeight = (float) (screenHeight);
 
         this.guitar = new ArrayList<>();
 
@@ -140,7 +142,10 @@ public class Level {
     private void initElements() {
         this.guitar = new ArrayList<>();
 
-        Point init = new Point(screenWidth / 6, screenHeight / 6);
+        int headerHeight = context.getResources().getDimensionPixelSize(R.dimen.header_height);
+
+
+        Point init = new Point(screenWidth / 6, headerHeight);
 
 
         guitar.add(new Cord(init.x + 0 * screenWidth / 5, init.y, cordWidth, cordHeight, context, this, MediaPlayer.create(context, R.raw.a_chord)));
@@ -158,14 +163,14 @@ public class Level {
             guitar.forEach(cord -> {
                 cord.setState(Cord.State.IS_GREEN);
                 cord.setAllActivated(false);
+                cord.playSound();
             });
             allActivated = false;
             score += 1;
         }
         xValue = currentX;
 
-long currentTime = System.currentTimeMillis();
-        if( this.lightSensorActivity.getLuminosity() < 40) {
+        if (this.lightSensorActivity.getLuminosity() < 40) {
             this.frequence = HARD_LEVEL_FREQUENCY;
         } else if (this.lightSensorActivity.getLuminosity() >= 40 && this.lightSensorActivity.getLuminosity() < 150) {
             this.frequence = MEDIUM_LEVEL_FREQUENCY;
@@ -179,12 +184,13 @@ long currentTime = System.currentTimeMillis();
         toast.setGravity(Gravity.TOP, 0, 50);
 
         ImageView imageView = new ImageView(context);
-        imageView.setImageResource(R.drawable.ic_baseline_vibration_24); // Replace "icon" with the name of your icon resource
-        
+        imageView.setImageResource(R.drawable.shake); // Replace "icon" with the name of your icon resource
+
         LinearLayout toastLayout = new LinearLayout(context);
         toastLayout.addView(imageView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         toast.setView(toastLayout);
         toast.show();
+
     }
 
     public void draggedCord(boolean draggedCord) {
@@ -213,17 +219,14 @@ long currentTime = System.currentTimeMillis();
         editor.putInt("current_score", score);
         editor.commit();
 
-        return false;
-
-//        return score < 0 || score > 10;
-
+        return score < 1;
     }
 
     public void toucheHandler(MotionEvent event) {
         this.guitar.forEach(cord -> cord.touchHandler(event));
     }
 
-    public int getFrequence() {
+    public int getFrequency() {
         return frequence;
     }
 }

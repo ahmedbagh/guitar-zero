@@ -89,38 +89,43 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         if (canvas != null) {
             super.draw(canvas);
             Paint paint = new Paint();
-            paint.setColor(Color.rgb(212, 168, 83));
+            paint.setColor(Color.rgb(54, 41, 4));
             canvas.drawColor(Color.rgb(212, 168, 83));
             canvas.drawRect(clipRect, paint);
             //
             Paint textPaint = new Paint();
-            textPaint.setTextAlign(Paint.Align.CENTER);
+            textPaint.setTextAlign(Paint.Align.RIGHT);
             textPaint.setTextSize(40);
-            textPaint.setColor(Color.rgb(54,41,4));
+            textPaint.setColor(Color.WHITE);
 
-            int xPos = (canvas.getWidth() / 2);
+            paint.setColor(Color.rgb(105,66,7));
+            canvas.drawCircle(canvas.getWidth()/2 , canvas.getHeight()/2, (canvas.getWidth()/3) + (canvas.getWidth()/10), paint);
+
+            int xPos = (canvas.getWidth() - (canvas.getWidth() / 8));
             int yPos = (int) ((headerHeight / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
             canvas.drawText("Score: " + String.valueOf(level_.getScore()), xPos, yPos, textPaint);
 
             textPaint.setTextAlign(Paint.Align.LEFT);
-            xPos = 0;
+            xPos = canvas.getWidth() / 8;
             yPos = (int) ((headerHeight / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
-            if (level_.getFrequence() == Level.EASY_LEVEL_FREQUENCY) {
-                canvas.drawText("Level: EASY" , xPos, yPos, textPaint);
+            if (level_.getFrequency() == Level.EASY_LEVEL_FREQUENCY) {
+                canvas.drawText("Level: EASY", xPos, yPos, textPaint);
             }
-            if (level_.getFrequence() == Level.MEDIUM_LEVEL_FREQUENCY) {
-                canvas.drawText("Level: MEDIUM" , xPos, yPos, textPaint);
+            if (level_.getFrequency() == Level.MEDIUM_LEVEL_FREQUENCY) {
+                canvas.drawText("Level: MEDIUM", xPos, yPos, textPaint);
             }
-            if (level_.getFrequence() == Level.HARD_LEVEL_FREQUENCY) {
-                canvas.drawText("Level: HARD" , xPos, yPos, textPaint);
+            if (level_.getFrequency() == Level.HARD_LEVEL_FREQUENCY) {
+                canvas.drawText("Level: HARD", xPos, yPos, textPaint);
             }
 
             level_.draw(canvas);
         }
     }
 
+    long startGame = System.currentTimeMillis();
+
     public void update() {
-        if (level_.isFinished()) {
+        if (level_.isFinished() || (System.currentTimeMillis() - startGame) >= 2 * 60 * 1000) {
             stopGame();
         } else {
             level_.update();

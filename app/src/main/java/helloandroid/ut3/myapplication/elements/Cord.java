@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.view.MotionEvent;
 
-import helloandroid.ut3.myapplication.R;
 import helloandroid.ut3.myapplication.levels.Level;
 
 public class Cord implements Element {
@@ -70,7 +69,7 @@ public class Cord implements Element {
     public void setState(State state) {
         switch (state) {
             case IS_ACTIVATED:
-                color = Color.rgb(152, 108, 80);
+                color = Color.rgb(208, 160, 130);
                 this.state = State.IS_ACTIVATED;
                 break;
             case IS_NOT_ACTIVATED:
@@ -95,28 +94,22 @@ public class Cord implements Element {
 
     @Override
     public void draw(Canvas canvas) {
-        Paint paint = new Paint();
-        paint.setColor(this.color);
-        canvas.drawRect(this.shape, paint);
+//        Paint paint = new Paint();
+//        paint.setColor(Color.WHITE);
+//        canvas.drawRect(this.shape, paint);
 
         // Initialize the paint object for drawing the line
         Paint linePaint = new Paint();
-        linePaint.setColor(Color.BLUE);
-        linePaint.setStrokeWidth(4);
+        linePaint.setColor(this.color);
+        linePaint.setStrokeWidth(10);
 
-        canvas.drawLine(lineX, this.shape.top, lineX, this.shape.bottom, linePaint);
+        canvas.drawLine(lineX + this.shape.width() / 2, this.shape.top, lineX + this.shape.width() / 2, this.shape.bottom, linePaint);
 
         // Update the position of the line
         if (this.state == State.IS_GREEN) {
-            lineX = (float) (this.shape.left + Math.sin(System.currentTimeMillis() / 100.0) * 35);
-            if (lineX < this.shape.left) {
-                this.lineX = this.shape.left;
-            }
-            if (lineX > this.shape.right) {
-                this.lineX = this.shape.right;
-            }
+            lineX = (float) (this.shape.left + Math.sin(System.currentTimeMillis() / 100.0) * 25);
         } else {
-            this.lineX = this.shape.left + this.shape.width() / 2;
+            this.lineX = this.shape.left;
         }
 
     }
@@ -130,11 +123,7 @@ public class Cord implements Element {
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if (y >= shape.top && x >= shape.left && y <= shape.bottom && x <= shape.right) {
                         level.draggedCord(true);
-                        if(mediaPlayer.isPlaying()){
-                            mediaPlayer.reset();
-                        } else {
-                            mediaPlayer.start();
-                        }
+                        playSound();
                         System.out.println("dragged");
                     }
                 }
@@ -149,5 +138,13 @@ public class Cord implements Element {
             }
         }
 
+    }
+
+
+    public void playSound() {
+        if (mediaPlayer.isPlaying()){
+            mediaPlayer.seekTo(0);
+        }
+        mediaPlayer.start();
     }
 }
