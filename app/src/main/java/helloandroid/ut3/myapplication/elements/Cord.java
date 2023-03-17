@@ -20,6 +20,7 @@ public class Cord implements Element {
     private Level level;
 
     private int color;
+    private float lineX;
 
     private boolean allActivated = false;
 
@@ -41,6 +42,7 @@ public class Cord implements Element {
         this.color = color;
         this.state = State.IS_NOT_ACTIVATED;
         this.mediaPlayer = mediaPlayer;
+        lineX = this.shape.left;
     }
 
     public State getState() {
@@ -96,6 +98,19 @@ public class Cord implements Element {
         Paint paint = new Paint();
         paint.setColor(this.color);
         canvas.drawRect(this.shape, paint);
+
+        // Initialize the paint object for drawing the line
+        Paint linePaint = new Paint();
+        linePaint.setColor(Color.BLUE);
+        linePaint.setStrokeWidth(4);
+
+        canvas.drawLine(lineX + this.shape.width()/2, this.shape.top, lineX + this.shape.width()/2, this.shape.bottom, linePaint);
+
+        // Update the position of the line
+        if (this.state == State.IS_GREEN) {
+            lineX = (float) (this.shape.left + Math.sin(System.currentTimeMillis() / 100.0) * 25);
+        }
+
     }
 
     public void touchHandler(MotionEvent event) {
