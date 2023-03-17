@@ -1,6 +1,7 @@
 package helloandroid.ut3.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -98,7 +99,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
             int xPos = (canvas.getWidth() / 2);
             int yPos = (int) ((headerHeight / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
-            canvas.drawText("Score : x", xPos, yPos, textPaint);
+            canvas.drawText("Score :" + String.valueOf(level_.getScore()), xPos, yPos, textPaint);
 
             level_.draw(canvas);
         }
@@ -113,8 +114,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     }
 
     public void stopGame() {
-//        this.surfaceDestroyed(this.getHolder());
-//        Intent intent = new Intent(getContext(), ScoreActivity.class);
-//        getContext().startActivity(intent);
+        this.surfaceDestroyed(this.getHolder());
+        Intent intent = new Intent(getContext(), ScoreActivity.class);
+        getContext().startActivity(intent);
     }
 }

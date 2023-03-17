@@ -27,28 +27,25 @@ public class ScoreActivity extends Activity {
         setContentView(R.layout.activity_score);
 
         SharedPreferences saved_values = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        Integer currentScore = saved_values.getInt("current_score", 999999);
-        Integer bestScore = saved_values.getInt("best_score", 999999);
+        Integer currentScore = saved_values.getInt("current_score", 0);
+        Integer bestScore = saved_values.getInt("best_score", 0);
 
         System.out.println("current" + currentScore);
         System.out.println("best" + bestScore);
-        if (currentScore <= bestScore) {
+        if (currentScore > bestScore) {
             bestScore = currentScore;
             SharedPreferences.Editor editor = saved_values.edit();
             editor.putInt("best_score", bestScore);
             editor.commit();
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String BestTime = sdf.format(new Date(bestScore));
+
 
         TextView scoreText = findViewById(R.id.BestScore);
-        scoreText.setText("The best score is: \n" + BestTime);
+        scoreText.setText("The best score is: \n" + bestScore);
 
-        String CurrentTime = sdf.format(new Date(currentScore));
         TextView currentScoreText = findViewById(R.id.CurrentScore);
-        currentScoreText.setText("Your score was: \n" + CurrentTime);
+        currentScoreText.setText("Your score was: \n" + currentScore);
 
         initListener();
     }
